@@ -9,10 +9,10 @@ class BookController extends Controller
 {
     public function index()
     {
-        $data = new Book(); // membuat object
-        $books = $data->getBooks(); // mengakses method getBooks
+        // $data = new Book(); // membuat object
+        // $books = $data->getBooks(); // mengakses method getBooks
 
-
-        return view('books', ['books' => $books]);
+        $books = Book::with(['genre', 'author'])->get();
+        return view('books', compact('books'));
     }
 }

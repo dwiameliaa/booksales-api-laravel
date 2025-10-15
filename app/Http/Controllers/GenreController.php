@@ -9,9 +9,14 @@ class GenreController extends Controller
 {
     public function index()
     {
-        $data = new Genre();
-        $genres = $data->getGenres();
+        // ini untuk data dummy
+        // $data = new Genre();
+        // $genres = $data->getGenres();
 
-        return view('genres', ['genres' => $genres]);
+        $genres = Genre::all();
+
+        // ::all untuk mengambil semua data dari table genre
+
+        return view('genres', ['genres' => $genres]); // datanya disimpan di array genres, key => value
     }
 }
