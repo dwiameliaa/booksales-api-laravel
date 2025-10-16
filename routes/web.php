@@ -9,9 +9,9 @@ Route::get('/', function () { // get ini method httpuntuk menampilkan sebuah dat
     return view('welcome');
 });
 
-Route::get('/books', [BookController::class, 'index']); // index ini method yang ada di class controller
-Route::get('/genres', [GenreController::class, 'index']);
-Route::get('/authors', [AuthorController::class, 'index']);
+// Route::get('/books', [BookController::class, 'index']); // index ini method yang ada di class controller
+// Route::get('/genres', [GenreController::class, 'index']);
+// Route::get('/authors', [AuthorController::class, 'index']);
 
 
 
