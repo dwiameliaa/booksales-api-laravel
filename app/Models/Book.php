@@ -52,6 +52,7 @@ class Book extends Model
     // }
 
     protected $table = "books";
+    protected $fillable = ['title', 'description', 'price', 'stock', 'cover_photo', 'genre_id', 'author_id'];
 
     // Relasi ke Genre (banyak buku milik satu genre)
     public function genre()
