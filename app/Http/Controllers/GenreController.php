@@ -63,6 +63,85 @@ class GenreController extends Controller
             'massage' => 'Resource added successfully!',
             'data' => $genre,
         ], 201);
+    }
 
+    public function show(string $id)
+    {
+        $genre = Genre::find($id);
+
+        if (!$genre) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Resource not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Get Detail resource',
+            'data' => $genre,
+        ], 200);
+    }
+
+    public function update(string $id, Request $request)
+    {
+        // 1. mencari data
+        $genre = Genre::find($id);
+
+        if (!$genre) {
+            return response()->json([
+                "success" => false,
+                "message" => "Genre not found"
+            ], 404);
+        }
+
+        // 2. validator
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:100',
+            'description' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()
+            ], 422);
+        }
+
+        // 3. siapkan data yang ingin di update
+        $data = [
+            'name' => $request->name,
+            'description' => $request->description,
+        ];
+
+        // 4. update data baru ke database
+        $genre->update($data);
+
+        return response()->json([
+            'succes' => true,
+            'massage' => 'Resource updated successfully!',
+            'data' => $genre,
+        ], 200);
+    }
+
+    public function destroy(string $id)
+    {
+        $genre = Genre::find($id);
+
+        // Jika data tidak ditemukan
+        if (!$genre) {
+            return response()->json([
+                "success" => false,
+                "message" => "Genre not found"
+            ], 404);
+        }
+        
+        // Jika berhasil dihapus
+        $genre->delete();
+
+        return response()->json([
+            "success" => true,
+            "message" => "Genre deleted successfully"
+        ], 200);
     }
 }
