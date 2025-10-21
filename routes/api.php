@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\GenreController;
@@ -11,14 +12,25 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::apiResource('/books', BookController::class)->only(['index', 'show']); // method index dan show bisa diakases tanpa perlu login
+Route::apiResource('/genres', GenreController::class)->only(['index', 'show']);
+Route::apiResource('/authors', AuthorController::class)->only(['index', 'show']);
+
+Route::middleware(['auth:api'])->group(function () { // middleware untuk login
+    
+    Route::middleware(['role:admin'])->group(function () { // middleware untuk admin
+        Route::apiResource('/books', BookController::class)->only(['store', 'update', 'destroy']); // hanya bisa diakses ketika login
+        Route::apiResource('/genres', GenreController::class)->only(['store', 'update', 'destroy']);
+        Route::apiResource('/authors', AuthorController::class)->only(['store', 'update', 'destroy']);
+    });
+});
 
 // Route::get('/books', [BookController::class, 'index']);
 // Route::post('/books', [BookController::class, 'store']);
 // Route::get('/books/{id}', [BookController::class, 'show']);
 // Route::post('/books/{id}', [BookController::class, 'update']);
 // Route::delete('/books/{id}', [BookController::class, 'destroy']);
-Route::apiResource('/books', BookController::class);
 
-Route::apiResource('/genres', GenreController::class);
-
-Route::apiResource('/authors', AuthorController::class);
