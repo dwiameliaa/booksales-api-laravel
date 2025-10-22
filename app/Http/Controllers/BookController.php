@@ -48,7 +48,7 @@ class BookController extends Controller
         // 2. cek validator error
         if ($validator->fails()) {
             return response()->json([
-                'succes' => false,
+                'success' => false,
                 'message' => $validator->errors()
             ], 422);
         }
@@ -70,15 +70,15 @@ class BookController extends Controller
 
         // 5. response
         return response()->json([
-            'succes' => true,
-            'massage' => 'Resource added successfully!',
+            'success' => true,
+            'message' => 'Resource added successfully!',
             'data' => $book,
         ], 201);
     }
 
     public function show(string $id)
     {
-        $book = Book::find($id);
+        $book = Book::with(['genre', 'author'])->find($id);
 
         if (!$book) {
             return response()->json([
@@ -119,7 +119,7 @@ class BookController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'succes' => false,
+                'success' => false,
                 'message' => $validator->errors()
             ], 422);
         }
@@ -150,8 +150,8 @@ class BookController extends Controller
         $book->update($data);
 
         return response()->json([
-            'succes' => true,
-            'massage' => 'Resource updated successfully!',
+            'success' => true,
+            'message' => 'Resource updated successfully!',
             'data' => $book,
         ], 200);
     }
